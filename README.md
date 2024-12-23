@@ -1,16 +1,31 @@
-Sensor getar SW-420 dapat bereaksi terhadap getaran dari berbagai sudut. Pada 
-kondisi statis / tanpa getaran, komponen elektronika berfungsi seperti saklar yang 
-berada pada kondisi menutup (normally closed) dan bersifat kondiktif, sebaliknya 
-pada terguncang (terpapar getaran). saklar akan membuka / menutup dengan 
-kecepatan pengalihan (switching frequency) proporsional dengan kekerapan 
-guncangan. Pengalihan bergantian secara cepat ini mirip seperti cara kerja PWM 
-(pulse width modulation) yang merupakan sinyal pseduo-analog berupa tingkat 
-tegangan yang kemudian dibandingkan oleh sirkuit terpadu LM393 (Voltage 
-Comparator IC) dengan besar nilai ambang batas (treshold) tegangan pembanding 
-diatur oleh sebuah resistor eksternal.
- Adapun cara kerja sensor getar SW-420 dari experiment ini yaitu sensor akan 
-mendeteksi segala bentuk guncangan/getaran yang ditimbulkan kemudian akan 
-ditandakan dengan indikator 2 buah LED yang disiapkan. Ketika sensor getar SW420 menerima getaran maka indikator LED Biru akan menyala dan nilai yang 
-ditampilkan pada serial monitor bernilai 1. Sedangkan ketika sensor tidak menerima 
-getaran maka akan ditandai dengan indikator lampu LED Orange yang menyala dan 
-nilai yang ditampilkan pada serial monitor sebesar 0
+//Sensor getar
+const int pinGetar = 3;     //inisialisasi pin sensor
+const int ledBlue = 8;       //inisialisasi pin LED
+const int ledOrange = 7;     //inisialisasi pin LED
+
+void setup() {
+Serial.begin (9600);        //program menyalakan serial monitor
+pinMode (ledBlue, OUTPUT);   //menetapkan pin 8 sebagai output
+pinMode (ledOrange, OUTPUT); //menetapkan pin 7 sebagai output
+}
+
+void loop() {
+//Membaca data dari pin yang dihubungkan ke sensor kemudian di tampilkan di serial monitor
+int datadigital = digitalRead (pinGetar);
+Serial.print ("Sensor : ");
+Serial.print (datadigital);
+
+//Program ketika sensor mendeteksi guncangan
+if (datadigital == 1) {
+  Serial.println (" mendeteksi getaran");
+  digitalWrite (ledBlue, HIGH);
+  digitalWrite (ledOrange, LOW);
+}
+
+//Program ketika sensor tidak mendeteksi guncangan
+else if (datadigital == 0) {
+  Serial.println (" Tidak mendeteksi getaran");
+  digitalWrite (ledBlue, LOW);
+  digitalWrite (ledOrange, HIGH);
+}
+}
